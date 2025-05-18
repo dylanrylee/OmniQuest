@@ -1,46 +1,45 @@
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { useState } from 'react';
-import AuthTextInput from '../components/AuthTextInput';
-import { Link } from 'expo-router';
+import { View, Text, TextInput, Pressable } from 'react-native';
+import { authStyles } from '../styles/authStyle.styles';
+import { useRouter } from 'expo-router';
 
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = () => {
-    console.log('Login clicked', { email, password });
-  };
+export default function Login() {
+  const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    <View style={authStyles.container}>
+      <Text style={authStyles.header}>OmniQuest</Text>
+      <Text style={authStyles.pageLabel}>Login</Text>
 
-      <AuthTextInput
+      <TextInput
         placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
+        placeholderTextColor="#888"
+        style={authStyles.input}
         keyboardType="email-address"
+        autoCapitalize="none"
       />
-
-      <AuthTextInput
+      <TextInput
         placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
+        placeholderTextColor="#888"
         secureTextEntry
+        style={authStyles.input}
       />
 
-      <Button title="Log In" onPress={handleLogin} />
+      <Pressable style={authStyles.button}>
+        <Text style={authStyles.buttonText}>Login</Text>
+      </Pressable>
 
-      
-      <Link href="/signup">
-          <Text style={{ marginTop: 10, textAlign: 'center' }}>Don't have an account? Sign up</Text>
-      </Link>
+      <View style={authStyles.footerTextContainer}>
+        <Text style={authStyles.footerText}>Don't have an account? </Text>
+        <Pressable
+          onPress={() => router.push('/signup')}
+          style={({ pressed }) => [
+            authStyles.linkWrapper,
+            pressed && authStyles.linkPressed,
+          ]}
+        >
+          <Text style={authStyles.link}>Sign up</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-});

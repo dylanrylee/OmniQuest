@@ -1,14 +1,28 @@
-// app/index.tsx
-import { Link } from 'expo-router';
-import { View, Text } from 'react-native';
+import { View, Text, ImageBackground, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
+import { styles } from '../styles/index.styles';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Welcome to OmniQuest</Text>
-      <Link href="/login">
-        <Text style={{ color: 'blue', marginTop: 10 }}>Go to Login</Text>
-      </Link>
-    </View>
+    <ImageBackground style={styles.background} resizeMode="cover">
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Welcome to OmniQuest</Text>
+        <Text style={styles.quote}>
+          “You don’t get stronger by taking it easy. You get stronger by pushing through.” — OmniMind
+        </Text>
+
+        <Pressable
+          onPress={() => router.push('/login')}
+          style={({ pressed }) => [
+            styles.linkWrapper,
+            pressed && styles.linkPressed,
+          ]}
+        >
+          <Text style={styles.link}>Start Training →</Text>
+        </Pressable>
+      </View>
+    </ImageBackground>
   );
 }
