@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { authStyles } from '../styles/authStyle.styles';
-import { api } from '../utils/api';
+import axios from 'axios'; 
 
 export default function Signup() {
   const router = useRouter();
@@ -18,9 +18,12 @@ export default function Signup() {
 
     try {
       console.log('🟡 Sending signup request to backend...');
-      const response = await api.post('/auth/signup', { email, password });
-      console.log('🟢 Signup success:', response.data);
+      const response = await axios.post(
+        'http://192.168.1.167:8080/api/auth/signup',
+        { email, password }
+      );
 
+      console.log('🟢 Signup success:', response.data);
       Alert.alert('Success', response.data.message);
       router.push('/login');
     } catch (error: any) {

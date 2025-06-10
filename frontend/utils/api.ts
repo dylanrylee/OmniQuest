@@ -8,5 +8,6 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false, // ✅ ensure this is off
+  withCredentials: false,
 });
+  

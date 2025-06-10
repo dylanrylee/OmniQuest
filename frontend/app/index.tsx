@@ -1,28 +1,26 @@
-import { View, Text, ImageBackground, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { styles } from '../styles/index.styles';
 
-export default function Home() {
+export default function Index() {
   const router = useRouter();
 
   return (
-    <ImageBackground style={styles.background} resizeMode="cover">
-      <View style={styles.overlay}>
-        <Text style={styles.title}>Welcome to OmniQuest</Text>
-        <Text style={styles.quote}>
-          “You don’t get stronger by taking it easy. You get stronger by pushing through.” — OmniMind
-        </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome to OmniQuest</Text>
+      <Text style={styles.quote}>
+        “You don’t get stronger by taking it easy. You get stronger by pushing through.”
+      </Text>
 
-        <Pressable
-          onPress={() => router.push('/login')}
-          style={({ pressed }) => [
-            styles.linkWrapper,
-            pressed && styles.linkPressed,
-          ]}
-        >
-          <Text style={styles.link}>Start Training →</Text>
-        </Pressable>
-      </View>
-    </ImageBackground>
+      <Pressable
+        onPress={() => router.push('/login')}
+        style={({ pressed }) => [
+          styles.button,
+          pressed && styles.buttonPressed,
+        ]}
+      >
+        <Text style={styles.buttonText}>Start Training</Text>
+      </Pressable>
+    </View>
   );
 }
