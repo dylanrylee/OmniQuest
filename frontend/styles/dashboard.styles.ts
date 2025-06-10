@@ -40,4 +40,51 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+
+    modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 24,
+    borderRadius: 12,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalHeading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#8B0000',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#8B0000',
+    paddingVertical: 12,
+    borderRadius: 8,
+    width: '100%',
+    marginBottom: 12,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  cancelText: {
+    color: '#8B0000',
+    marginTop: 10,
+    fontSize: 16,
+  },
+
+  buttonPressed: {
+    backgroundColor: '#a30000', // slightly darker red
+    transform: [{ scale: 0.97 }],
+  },
+
+  cancelButton: {
+    marginTop: 10,
+  },
 });
