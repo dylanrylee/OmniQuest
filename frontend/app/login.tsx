@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, Alert, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { authStyles } from '../styles/authStyle.styles';
-import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { api } from '../utils/api';
 
 export default function Login() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       console.log('🟡 Sending login request to backend...');
-      const response = await axios.post('http://192.168.1.167:8080/api/auth/login', {
+      const response = await api.post('/auth/login', {
         email,
         password,
       });
