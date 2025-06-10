@@ -12,35 +12,21 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      console.log('🟡 Sending login request to backend...');
       const response = await api.post('/auth/login', {
         email,
         password,
       });
 
-      const { token, email: userEmail } = response.data;
+      // 👇 Save email for dashboard
+      localStorage.setItem('email', response.data.email);
 
-      // ✅ Store based on platform
-      if (Platform.OS === 'web') {
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userEmail', userEmail);
-      } else {
-        await SecureStore.setItemAsync('authToken', token);
-        await SecureStore.setItemAsync('userEmail', userEmail);
-      }
+      // 👇 Save token if needed
+      localStorage.setItem('token', response.data.token);
 
-      console.log('🟢 Login success:', response.data);
-      Alert.alert('Success', 'Logged in successfully');
-
-      setTimeout(() => {
-        router.replace('/dashboard');
-      }, 100);
-    } catch (error: any) {
-      console.error('🔴 Login error:', error);
-      Alert.alert(
-        'Login Failed',
-        error.response?.data?.message || 'Invalid email or password.'
-      );
+      router.replace('/dashboard');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Login failed', 'Please check your credentials.');
     }
   };
 

@@ -1,49 +1,42 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { authStyles } from '../styles/authStyle.styles';
+import { styles } from '../styles/dashboard.styles';
 
 export default function Dashboard() {
   const router = useRouter();
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState('User');
+  const [hasDietPlan, setHasDietPlan] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    const email = localStorage.getItem('userEmail');
-
-    if (!token || !email) {
-      Alert.alert('Session Expired', 'Please log in again.');
-      router.replace('/login');
-    } else {
-      setUserEmail(email);
-    }
-
-    setLoading(false);
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) setEmail(storedEmail);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
-    router.replace('/login');
-  };
-
-  if (loading) {
-    return (
-      <View style={authStyles.container}>
-        <ActivityIndicator size="large" color="#00bfff" />
-      </View>
-    );
-  }
 
   return (
-    <View style={authStyles.container}>
-      <Text style={authStyles.header}>Dashboard</Text>
-      <Text style={authStyles.pageLabel}>Welcome, {userEmail}!</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>OmniQuest</Text>
+      <Text style={styles.subtitle}>Welcome, {email}</Text>
 
-      <Pressable style={authStyles.button} onPress={handleLogout}>
-        <Text style={authStyles.buttonText}>Logout</Text>
-      </Pressable>
-    </View>
+      <View style={styles.section}>
+        <Text style={styles.heading}>Workout Sessions</Text>
+        <Pressable style={styles.button} onPress={() => router.push('/add-workout')}>
+          <Text style={styles.buttonText}>+ Add Workout</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.heading}>Diet Plan</Text>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.push(hasDietPlan ? '/edit-diet' : '/create-diet')}
+        >
+          <Text style={styles.buttonText}>
+            {hasDietPlan ? 'Edit Diet Plan' : '+ Create Diet Plan'}
+          </Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }

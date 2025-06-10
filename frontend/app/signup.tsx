@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import { authStyles } from '../styles/authStyle.styles';
 import { api } from '../utils/api';
 
-
 export default function Signup() {
   const router = useRouter();
   const [email, setEmail] = useState('');
