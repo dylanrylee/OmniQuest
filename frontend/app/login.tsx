@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, Alert } from 'react-native';
+import { View, Text, TextInput, Pressable, Alert, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { authStyles } from '../styles/authStyle.styles';
-import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 export default function Login() {
   const router = useRouter();
@@ -20,9 +20,14 @@ export default function Login() {
 
       const { token, email: userEmail } = response.data;
 
-      // ✅ Save token & email
-      await SecureStore.setItemAsync('authToken', token);
-      await SecureStore.setItemAsync('userEmail', userEmail);
+      // ✅ Store based on platform
+      if (Platform.OS === 'web') {
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userEmail', userEmail);
+      } else {
+        await SecureStore.setItemAsync('authToken', token);
+        await SecureStore.setItemAsync('userEmail', userEmail);
+      }
 
       console.log('🟢 Login success:', response.data);
       Alert.alert('Success', 'Logged in successfully');
@@ -67,7 +72,7 @@ export default function Login() {
       </Pressable>
 
       <View style={authStyles.footerTextContainer}>
-        <Text style={authStyles.footerText}>Don’t have an account? </Text>
+        <Text style={authStyles.footerText}>Don't have an account? </Text>
         <Pressable
           onPress={() => router.push('/signup')}
           style={({ pressed }) => [
@@ -75,7 +80,7 @@ export default function Login() {
             pressed && authStyles.linkPressed,
           ]}
         >
-          <Text style={authStyles.link}>Sign Up</Text>
+          <Text style={authStyles.link}>Sign up</Text>
         </Pressable>
       </View>
     </View>

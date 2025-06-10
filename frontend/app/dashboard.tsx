@@ -1,57 +1,48 @@
 import { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, Pressable } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import { View, Text, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { authStyles } from '../styles/authStyle.styles';
 
 export default function Dashboard() {
   const router = useRouter();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState('');
 
   useEffect(() => {
-    const verifyAuth = async () => {
-      const token = await SecureStore.getItemAsync('authToken');
-      const storedEmail = await SecureStore.getItemAsync('userEmail');
+    const token = localStorage.getItem('authToken');
+    const email = localStorage.getItem('userEmail');
 
-      if (!token) {
-        router.replace('/login'); // kick back to login
-        return;
-      }
+    if (!token || !email) {
+      Alert.alert('Session Expired', 'Please log in again.');
+      router.replace('/login');
+    } else {
+      setUserEmail(email);
+    }
 
-      setEmail(storedEmail || '');
-      setLoading(false);
-    };
-
-    verifyAuth();
+    setLoading(false);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
+    router.replace('/login');
+  };
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={authStyles.container}>
         <ActivityIndicator size="large" color="#00bfff" />
       </View>
     );
   }
 
   return (
-    <View style={{ padding: 24 }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Welcome to OmniQuest</Text>
-      <Text style={{ marginTop: 8 }}>Logged in as: {email}</Text>
+    <View style={authStyles.container}>
+      <Text style={authStyles.header}>Dashboard</Text>
+      <Text style={authStyles.pageLabel}>Welcome, {userEmail}!</Text>
 
-      <Pressable
-        onPress={async () => {
-          await SecureStore.deleteItemAsync('authToken');
-          await SecureStore.deleteItemAsync('userEmail');
-          router.replace('/login');
-        }}
-        style={{
-          marginTop: 20,
-          padding: 12,
-          backgroundColor: '#222',
-          borderRadius: 8,
-        }}
-      >
-        <Text style={{ color: '#fff', textAlign: 'center' }}>Logout</Text>
+      <Pressable style={authStyles.button} onPress={handleLogout}>
+        <Text style={authStyles.buttonText}>Logout</Text>
       </Pressable>
     </View>
   );
