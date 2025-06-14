@@ -16,10 +16,10 @@
 - Apache Maven
 
 ### Database
-- MongoDB (NoSQL)
+- MongoDB Atlas (NoSQL)
 
 ### Future Integrations
-- AWS (S3, EC2, or Amplify for deployment & storage)
+- AWS (S3, EC2)
 - OpenAI LLM (for personalized AI-driven plans & insights)
 
 ---
